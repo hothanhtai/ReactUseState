@@ -86,59 +86,105 @@ import './App.css';
 
 //========================TWO-WAY-BINDING in CHECKBOX==================
 
-const courses = [
-  {
-    id:1,
-    name: "HTML,CSS"
-  },
-  {
-    id:2,
-    name: "Javascript"
-  },
-  {
-    id:3,
-    name: "ReactJS"
-  }
-]
-function App() {
-  const [checked, setChecked] = useState([])
+// const courses = [
+//   {
+//     id:1,
+//     name: "HTML,CSS"
+//   },
+//   {
+//     id:2,
+//     name: "Javascript"
+//   },
+//   {
+//     id:3,
+//     name: "ReactJS"
+//   }
+// ]
+// function App() {
+//   const [checked, setChecked] = useState([])
 
 
-  console.log(checked)
+//   console.log(checked)
 
-  const handleCheck = (id) => {
-    setChecked(prev =>{
-      const isChecked =  checked.includes(id)
+//   const handleCheck = (id) => {
+//     setChecked(prev =>{
+//       const isChecked =  checked.includes(id)
 
-      if(isChecked){
-        return checked.filter(item => item !== id)
-      }else{
-        return [...prev,id]
-      }
-    })
-  }
-  const handelSubmit = () =>{
-    console.log({ids:checked})
+//       if(isChecked){
+//         return checked.filter(item => item !== id)
+//       }else{
+//         return [...prev,id]
+//       }
+//     })
+//   }
+//   const handelSubmit = () =>{
+//     console.log({ids:checked})
 
+//     }
+
+
+//   return (
+//     <div className="App">
+//       {
+//         courses.map(course => (
+//           <div key={course.id}>
+//             <input 
+//               checked={ checked.includes(course.id)}
+//               type="checkbox"
+//               onChange={() => handleCheck(course.id)}
+//               />
+//               {course.name}
+//           </div>
+//         ))}
+//       <button onClick={handelSubmit}>Register</button>
+//     </div>
+//   )
+// }
+// export default App;
+
+
+//=======================TO DO LIST==========================
+function App(){
+
+  const [job,setJob] = useState('')
+  const [jobs,setJobs] = useState(() => {
+    const storageJobs = JSON.parse(localStorage.getItem('jobs'))
+    if(storageJobs === null || storageJobs === undefined){
+      return []
     }
+    return storageJobs
+  })
+  const handleSubmit = () => {
+    setJobs(prev => {
+      const newJobs = [...prev,job]
+      const jsonJobs = JSON.stringify(newJobs)
+      localStorage.setItem('jobs', jsonJobs)
 
+      return newJobs
+    })
+
+
+    setJob('')
+  }
 
   return (
-    <div className="App">
-      {
-        courses.map(course => (
-          <div key={course.id}>
-            <input 
-              checked={ checked.includes(course.id)}
-              type="checkbox"
-              onChange={() => handleCheck(course.id)}
-              />
-              {course.name}
-          </div>
-        ))}
-      <button onClick={handelSubmit}>Register</button>
-    </div>
+      <div className='App'>
+          <input value={job} onChange={e => setJob(e.target.value)}/>
+          <button onClick={handleSubmit}>Add</button>
+
+          <ul>
+            {
+              jobs.map((job,index) => (
+                    <li key={index}>{job}</li>
+                  ))
+            }
+          </ul>
+      </div>
   )
 }
+
+
+
+
 
 export default App;
