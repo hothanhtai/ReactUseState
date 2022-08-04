@@ -76,8 +76,22 @@ import { useEffect, useState } from "react";
 // ==> callBack sẽ được gọi lại khi deps thay đổi
 
 // const tabs = ['posts','comments','albums']
-
+const lessons = [
+    {
+        id:1,
+        name:'Chanel 1'
+    },
+    {
+        id:2,
+        name:'Chanel 2'
+    },
+    {
+        id:3,
+        name:'Chanel 3'
+    }
+]
 function Content() {
+    
     // const [title,setTitle] = useState('')
     // const [posts,setPost] = useState([])
     // const [type, setType] = useState('posts')
@@ -135,18 +149,30 @@ function Content() {
     //         clearInterval(timerId)
     //     }
     // }, [])
-    const [avatar, setAvatar] = useState()
+    // const [avatar, setAvatar] = useState()
+
+    // useEffect(() => {
+    //     //cleanup function
+    //     return () => { avatar && URL.revokeObjectURL(avatar.preview)}
+    // },[avatar])
+    // const handleReviewAvatar = (e) => {
+    //         const file = e.target.files[0]
+    //        file.preview = URL.createObjectURL(file)
+
+    //        setAvatar(file)
+    // }
+    const [lessonId, setLessonId] = useState(1)
 
     useEffect(() => {
-        //cleanup function
-        return () => { avatar && URL.revokeObjectURL(avatar.preview)}
-    },[avatar])
-    const handleReviewAvatar = (e) => {
-            const file = e.target.files[0]
-           file.preview = URL.createObjectURL(file)
-
-           setAvatar(file)
-    }
+        const handleCommnent = ({detail}) => {
+            console.log(detail)
+        }
+        window.addEventListener(`lesson-${lessonId}`,handleCommnent)
+        return () => {
+            window.removeEventListener(`lesson-${lessonId}`,handleCommnent)
+        }
+    },[lessonId])
+   
 
     return (
 
@@ -192,17 +218,35 @@ function Content() {
             <div>
                 <h1>{countdown}</h1>
             </div> */
+            // <div>
+            //     <input 
+            //         type= "file"
+            //         onChange = {handleReviewAvatar}
+            //     />
+            //     {avatar && (
+            //         <img src={avatar.preview} alt="" width="30%"/>
+            //     )}
+            // </div>
+            
             <div>
-                <input 
-                    type= "file"
-                    onChange = {handleReviewAvatar}
-                />
-                {avatar && (
-                    <img src={avatar.preview} alt="" width="30%"/>
-                )}
+                <ul>
+                    {lessons.map(lesson => (
+                        <li 
+                            key={lesson.id}
+                            style={
+                                { 
+                                    color: lessonId === lesson.id ? "red" : "#333"
+                                }
+                            }
+                            onClick={() => setLessonId(lesson.id)}
+                        >
+                            {lesson.name}
+                        </li>
+                    ))}
+                </ul>
             </div>
             
-            
+
             }
        </div>
        
