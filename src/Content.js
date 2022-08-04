@@ -82,6 +82,7 @@ function Content() {
     const [posts,setPost] = useState([])
     const [type, setType] = useState('posts')
     const [showGoToTop, setShowGoToTop] = useState(false)
+    const [width, setWidth] = useState(window.innerWidth)
     
 
 
@@ -117,6 +118,12 @@ function Content() {
             console.log('remove')
         }
     },[])
+
+    useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth)
+
+        window.addEventListener('resize', handleResize)
+    }, [])
 
 
     return(
@@ -157,7 +164,11 @@ function Content() {
                 }}
                 >GO TO TOP</button>
             )}
+            <div>
+                <h1>{width}</h1>
+            </div>
        </div>
+       
 
     )
 }
