@@ -75,73 +75,84 @@ import { useEffect, useState } from "react";
 // 3. useEffect(callBack,[deps])
 // ==> callBack sẽ được gọi lại khi deps thay đổi
 
-const tabs = ['posts','comments','albums']
+// const tabs = ['posts','comments','albums']
 
 function Content() {
-    const [title,setTitle] = useState('')
-    const [posts,setPost] = useState([])
-    const [type, setType] = useState('posts')
-    const [showGoToTop, setShowGoToTop] = useState(false)
-    const [width, setWidth] = useState(window.innerWidth)
-    const [countdown, setCountdown] = useState(180)
+    // const [title,setTitle] = useState('')
+    // const [posts,setPost] = useState([])
+    // const [type, setType] = useState('posts')
+    // const [showGoToTop, setShowGoToTop] = useState(false)
+    // const [width, setWidth] = useState(window.innerWidth)
+    // const [countdown, setCountdown] = useState(180)
     
 
 
+    // useEffect(() => {
+    //     fetch(`https://jsonplaceholder.typicode.com/${
+    //         type
+    //     }`)
+    //         .then(res => res.json())
+    //         .then(posts => {
+    //            setPost(posts)
+    // })
+
+    // },[type])
+
+    // useEffect(() => {
+    //     const handleSroll = () => {
+    //         if(window.scrollY >= 200){
+    //             setShowGoToTop(true)
+
+    //         } else {
+    //             setShowGoToTop(false)
+
+    //         }
+    //         //setShowGoToTop(window.scrollY >= 200)
+
+    //     }
+
+    //     window.addEventListener('scroll',handleSroll)
+    //     console.log("add")
+    //     //cleanup function
+    //     return () => {
+    //         window.removeEventListener('scroll',handleSroll)
+    //         console.log('remove')
+    //     }
+    // },[])
+
+    // useEffect(() => {
+    //     const handleResize = () => setWidth(window.innerWidth)
+
+    //     window.addEventListener('resize', handleResize)
+    // }, [])
+
+    // useEffect(() => {
+
+    //    const timerId = setInterval(() => {
+    //         setCountdown(prevState => prevState-1)} ,1000)
+    //     //cleanup function
+    //     return () =>{
+    //         clearInterval(timerId)
+    //     }
+    // }, [])
+    const [avatar, setAvatar] = useState()
+
     useEffect(() => {
-        fetch(`https://jsonplaceholder.typicode.com/${
-            type
-        }`)
-            .then(res => res.json())
-            .then(posts => {
-               setPost(posts)
-    })
-
-    },[type])
-
-    useEffect(() => {
-        const handleSroll = () => {
-            if(window.scrollY >= 200){
-                setShowGoToTop(true)
-
-            } else {
-                setShowGoToTop(false)
-
-            }
-            //setShowGoToTop(window.scrollY >= 200)
-
-        }
-
-        window.addEventListener('scroll',handleSroll)
-        console.log("add")
         //cleanup function
-        return () => {
-            window.removeEventListener('scroll',handleSroll)
-            console.log('remove')
-        }
-    },[])
+        return () => { avatar && URL.revokeObjectURL(avatar.preview)}
+    },[avatar])
+    const handleReviewAvatar = (e) => {
+            const file = e.target.files[0]
+           file.preview = URL.createObjectURL(file)
 
-    useEffect(() => {
-        const handleResize = () => setWidth(window.innerWidth)
+           setAvatar(file)
+    }
 
-        window.addEventListener('resize', handleResize)
-    }, [])
-
-    useEffect(() => {
-
-       const timerId = setInterval(() => {
-            setCountdown(prevState => prevState-1)} ,1000)
-        //cleanup function
-        return () =>{
-            clearInterval(timerId)
-        }
-    }, [])
-
-
-    return(
+    return (
 
   
        <div>
-            {tabs.map(tab => (
+            {/* {tabs.map(tab => (
                     <button key = {tab}
                             style={ type === tab ? {
                                     color: '#fff',
@@ -180,7 +191,19 @@ function Content() {
             </div>
             <div>
                 <h1>{countdown}</h1>
+            </div> */
+            <div>
+                <input 
+                    type= "file"
+                    onChange = {handleReviewAvatar}
+                />
+                {avatar && (
+                    <img src={avatar.preview} alt="" width="30%"/>
+                )}
             </div>
+            
+            
+            }
        </div>
        
 
