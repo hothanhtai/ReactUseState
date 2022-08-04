@@ -83,6 +83,7 @@ function Content() {
     const [type, setType] = useState('posts')
     const [showGoToTop, setShowGoToTop] = useState(false)
     const [width, setWidth] = useState(window.innerWidth)
+    const [countdown, setCountdown] = useState(180)
     
 
 
@@ -123,6 +124,16 @@ function Content() {
         const handleResize = () => setWidth(window.innerWidth)
 
         window.addEventListener('resize', handleResize)
+    }, [])
+
+    useEffect(() => {
+
+       const timerId = setInterval(() => {
+            setCountdown(prevState => prevState-1)} ,1000)
+        //cleanup function
+        return () =>{
+            clearInterval(timerId)
+        }
     }, [])
 
 
@@ -166,6 +177,9 @@ function Content() {
             )}
             <div>
                 <h1>{width}</h1>
+            </div>
+            <div>
+                <h1>{countdown}</h1>
             </div>
        </div>
        
