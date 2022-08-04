@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-// CallBack luôn được gọi sau khi component mouted (cả 3 trường hợp của useEffect)
+// 1. CallBack luôn được gọi sau khi component mouted (cả 3 trường hợp của useEffect)
+// 2. Cleanup function luôn được gọi trước khi component unmounted
 
 
 //1. useEffec(callBack)
@@ -80,6 +81,8 @@ function Content() {
     const [title,setTitle] = useState('')
     const [posts,setPost] = useState([])
     const [type, setType] = useState('posts')
+    const [showGoToTop, setShowGoToTop] = useState(false)
+    
 
 
     useEffect(() => {
@@ -92,6 +95,28 @@ function Content() {
     })
 
     },[type])
+
+    useEffect(() => {
+        const handleSroll = () => {
+            if(window.scrollY >= 200){
+                setShowGoToTop(true)
+
+            } else {
+                setShowGoToTop(false)
+
+            }
+            //setShowGoToTop(window.scrollY >= 200)
+
+        }
+
+        window.addEventListener('scroll',handleSroll)
+        console.log("add")
+        //cleanup function
+        return () => {
+            window.removeEventListener('scroll',handleSroll)
+            console.log('remove')
+        }
+    },[])
 
 
     return(
@@ -123,6 +148,15 @@ function Content() {
                     ))
                 }
             </ul>
+            {showGoToTop && (
+                <button 
+                    style={{
+                        position:"fixed",
+                        right:20,
+                        bottom:20
+                }}
+                >GO TO TOP</button>
+            )}
        </div>
 
     )
