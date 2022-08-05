@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // 1. CallBack luôn được gọi sau khi component mouted (cả 3 trường hợp của useEffect)
 // 2. Cleanup function luôn được gọi trước khi component unmounted
@@ -76,20 +76,20 @@ import { useEffect, useState } from "react";
 // ==> callBack sẽ được gọi lại khi deps thay đổi
 
 // const tabs = ['posts','comments','albums']
-const lessons = [
-    {
-        id:1,
-        name:'Chanel 1'
-    },
-    {
-        id:2,
-        name:'Chanel 2'
-    },
-    {
-        id:3,
-        name:'Chanel 3'
-    }
-]
+// const lessons = [
+//     {
+//         id:1,
+//         name:'Chanel 1'
+//     },
+//     {
+//         id:2,
+//         name:'Chanel 2'
+//     },
+//     {
+//         id:3,
+//         name:'Chanel 3'
+//     }
+// ]
 function Content() {
     
     // const [title,setTitle] = useState('')
@@ -161,17 +161,61 @@ function Content() {
 
     //        setAvatar(file)
     // }
-    const [lessonId, setLessonId] = useState(1)
+    // const [lessonId, setLessonId] = useState(1)
+
+    // useEffect(() => {
+    //     const handleCommnent = ({detail}) => {
+    //         console.log(detail)
+    //     }
+    //     window.addEventListener(`lesson-${lessonId}`,handleCommnent)
+    //     return () => {
+    //         window.removeEventListener(`lesson-${lessonId}`,handleCommnent)
+    //     }
+    // },[lessonId])
+
+
+
+    //==============USE useRef===========================
+    // useRef luôn trả về giá trị là Object có key là current
+
+    const [count, setCount] = useState(60)
+
+    const timerID = useRef()
+    const prevCount = useRef()
+    const h1Ref = useRef()
+    // const handleStart = () => {
+    //        timerID.current = setInterval(() => {
+    //             setCount(prevCount => prevCount - 1)
+    //         }, 1000);
+    //         console.log('Start ->>',timerID.current)
+         
+    // }
+    useEffect(() => {
+        console.log(h1Ref.current)
+    },[])
 
     useEffect(() => {
-        const handleCommnent = ({detail}) => {
-            console.log(detail)
-        }
-        window.addEventListener(`lesson-${lessonId}`,handleCommnent)
+        prevCount.current = count
+    },[count])
+
+    useEffect(() => {
+        timerID.current = setInterval(() => {
+            setCount(prevCount => prevCount - 1)
+        }, 1000);
+        console.log('Start ->>',timerID.current)
         return () => {
-            window.removeEventListener(`lesson-${lessonId}`,handleCommnent)
+            clearInterval(timerID.current)
         }
-    },[lessonId])
+    },[])
+
+    const handleStop = () => {
+       clearInterval(timerID.current)
+
+       console.log('Stop ->>',timerID.current)
+
+    }
+
+    console.log(count, prevCount.current)
    
 
     return (
@@ -228,25 +272,31 @@ function Content() {
             //     )}
             // </div>
             
-            <div>
-                <ul>
-                    {lessons.map(lesson => (
-                        <li 
-                            key={lesson.id}
-                            style={
-                                { 
-                                    color: lessonId === lesson.id ? "red" : "#333"
-                                }
-                            }
-                            onClick={() => setLessonId(lesson.id)}
-                        >
-                            {lesson.name}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            // <div>
+            //     <ul>
+            //         {lessons.map(lesson => (
+            //             <li 
+            //                 key={lesson.id}
+            //                 style={
+            //                     { 
+            //                         color: lessonId === lesson.id ? "red" : "#333"
+            //                     }
+            //                 }
+            //                 onClick={() => setLessonId(lesson.id)}
+            //             >
+            //                 {lesson.name}
+            //             </li>
+            //         ))}
+            //     </ul>
+            // </div>
             
-
+                <div>
+                    <h1 ref={h1Ref}>{count}</h1>
+                    <button
+                        onClick={() => setCount(prevCount => prevCount -1)}
+                    >Start</button>
+                    <button onClick={handleStop}>Stop</button>
+                </div>
             }
        </div>
        
