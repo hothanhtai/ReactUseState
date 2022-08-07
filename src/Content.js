@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 
 // 1. CallBack luôn được gọi sau khi component mouted (cả 3 trường hợp của useEffect)
 // 2. Cleanup function luôn được gọi trước khi component unmounted
@@ -90,7 +90,7 @@ import { useEffect, useRef, useState } from "react";
 //         name:'Chanel 3'
 //     }
 // ]
-function Content() {
+function Content({onIncrease}) {
     
     // const [title,setTitle] = useState('')
     // const [posts,setPost] = useState([])
@@ -178,11 +178,11 @@ function Content() {
     //==============USE useRef===========================
     // useRef luôn trả về giá trị là Object có key là current
 
-    const [count, setCount] = useState(60)
+    // const [count, setCount] = useState(60)
 
-    const timerID = useRef()
-    const prevCount = useRef()
-    const h1Ref = useRef()
+    // const timerID = useRef()
+    // const prevCount = useRef()
+    // const h1Ref = useRef()
     // const handleStart = () => {
     //        timerID.current = setInterval(() => {
     //             setCount(prevCount => prevCount - 1)
@@ -190,32 +190,34 @@ function Content() {
     //         console.log('Start ->>',timerID.current)
          
     // }
-    useEffect(() => {
-        console.log(h1Ref.current)
-    },[])
+    // useEffect(() => {
+    //     console.log(h1Ref.current)
+    // },[])
 
-    useEffect(() => {
-        prevCount.current = count
-    },[count])
+    // useEffect(() => {
+    //     prevCount.current = count
+    // },[count])
 
-    useEffect(() => {
-        timerID.current = setInterval(() => {
-            setCount(prevCount => prevCount - 1)
-        }, 1000);
-        console.log('Start ->>',timerID.current)
-        return () => {
-            clearInterval(timerID.current)
-        }
-    },[])
+    // useEffect(() => {
+    //     timerID.current = setInterval(() => {
+    //         setCount(prevCount => prevCount - 1)
+    //     }, 1000);
+    //     console.log('Start ->>',timerID.current)
+    //     return () => {
+    //         clearInterval(timerID.current)
+    //     }
+    // },[])
 
-    const handleStop = () => {
-       clearInterval(timerID.current)
+    // const handleStop = () => {
+    //    clearInterval(timerID.current)
 
-       console.log('Stop ->>',timerID.current)
+    //    console.log('Stop ->>',timerID.current)
 
-    }
+    // }
 
-    console.log(count, prevCount.current)
+    // console.log(count, prevCount.current)
+
+    console.log('Re-render')
    
 
     return (
@@ -290,13 +292,18 @@ function Content() {
             //     </ul>
             // </div>
             
-                <div>
-                    <h1 ref={h1Ref}>{count}</h1>
-                    <button
-                        onClick={() => setCount(prevCount => prevCount -1)}
-                    >Start</button>
-                    <button onClick={handleStop}>Stop</button>
-                </div>
+                // <div>
+                //     <h1 ref={h1Ref}>{count}</h1>
+                //     <button
+                //         onClick={() => setCount(prevCount => prevCount -1)}
+                //     >Start</button>
+                //     <button onClick={handleStop}>Stop</button>
+                // </div>
+              
+               <>
+               <h2>Hello world</h2>
+                <button onClick={onIncrease}>Click Me!</button>
+                </>
             }
        </div>
        
@@ -304,4 +311,4 @@ function Content() {
     )
 }
 
-export default Content;
+export default memo(Content);

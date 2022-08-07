@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import './App.css';
 import Content from './Content';
 
@@ -191,12 +191,20 @@ import Content from './Content';
 
 
 function App(){
-  const [show, setShow] = useState(false)
+  // const [show, setShow] = useState(false)
+  const [count, setCount] = useState(0)
 
+  const handleIncrease = useCallback(() => {
+    setCount(prevCount => prevCount + 1)
+},[])
     return (
-      <div className='App'>
-        <button onClick={() => setShow(!show)}>Show</button>
-         {show&& <Content/>}
+      // <div className='App'>
+      //   <button onClick={() => setShow(!show)}>Show</button>
+      //    {show&& <Content/>}
+      // </div>
+      <div>
+        <Content onIncrease={handleIncrease}/>
+        <h1>{count}</h1>
       </div>
     )
 }
