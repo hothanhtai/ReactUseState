@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import './App.css';
 import Content from './Content';
 
@@ -192,19 +192,68 @@ import Content from './Content';
 
 function App(){
   // const [show, setShow] = useState(false)
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
 
-  const handleIncrease = useCallback(() => {
-    setCount(prevCount => prevCount + 1)
-},[])
+//   const handleIncrease = useCallback(() => {
+//     setCount(prevCount => prevCount + 1)
+// },[])
+  const [name, setName] = useState('')
+  const [price, setPrice] =useState('')
+  const [products, setProducts] = useState([])
+
+  const nameRef = useRef()
+
+  const handleSubmit = () => {
+    setProducts([...products,{
+      name,
+      price : +price
+   
+    }])
+    setName('')
+    setPrice('')
+
+    nameRef.current.focus()
+  }
+  const total = useMemo(() => {  //useMemo : Dùng useMemo để tránh Re-render lại một logic không cần thiết
+
+   const result =  products.reduce((result, prod) => result+ prod.price , 0)
+    return result
+  },[products])
     return (
       // <div className='App'>
       //   <button onClick={() => setShow(!show)}>Show</button>
       //    {show&& <Content/>}
       // </div>
       <div>
-        <Content onIncrease={handleIncrease}/>
-        <h1>{count}</h1>
+        { /* <Content onIncrease={handleIncrease}/>
+        <h1>{count}</h1> */ }
+         <input
+          ref={nameRef}
+          value={name}
+          placeholder= 'Enter Name...'
+          onChange={e => setName(e.target.value)}
+         />
+         <br />
+         <input
+          value={price}
+          placeholder= 'Enter Price...'
+          onChange={e => setPrice(e.target.value)}
+         />
+         <button onClick={handleSubmit}>Add</button>
+
+         <br/>
+
+         Total:  {total}
+
+        <ul>
+          {
+            products.map((product,index) => (
+              <li key={index}>
+                  {product.name} - {product.price}
+              </li>
+            ) )
+          }
+        </ul>
       </div>
     )
 }
