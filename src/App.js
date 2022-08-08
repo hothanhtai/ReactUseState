@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useReducer, useRef, useState } from 'react';
 import './App.css';
 import Content from './Content';
 
@@ -190,6 +190,26 @@ import Content from './Content';
 // export default App;
 
 
+//===================useReducer=======================
+
+const initState = 0
+
+const UP_ACTION = 'up'
+const DOWN_ACTION = 'down'
+
+const reducer = (state, actions) => {
+  switch (actions) {
+    case UP_ACTION:
+      return state + 1
+      
+    case DOWN_ACTION:
+      return state - 1  
+    default:
+      throw new Error('Invalid action')
+  }
+}
+
+
 function App(){
   // const [show, setShow] = useState(false)
   // const [count, setCount] = useState(0)
@@ -197,28 +217,35 @@ function App(){
 //   const handleIncrease = useCallback(() => {
 //     setCount(prevCount => prevCount + 1)
 // },[])
-  const [name, setName] = useState('')
-  const [price, setPrice] =useState('')
-  const [products, setProducts] = useState([])
+  // const [name, setName] = useState('')
+  // const [price, setPrice] =useState('')
+  // const [products, setProducts] = useState([])
 
-  const nameRef = useRef()
+  // const nameRef = useRef()
 
-  const handleSubmit = () => {
-    setProducts([...products,{
-      name,
-      price : +price
+  // const handleSubmit = () => {
+  //   setProducts([...products,{
+  //     name,
+  //     price : +price
    
-    }])
-    setName('')
-    setPrice('')
+  //   }])
+  //   setName('')
+  //   setPrice('')
 
-    nameRef.current.focus()
-  }
-  const total = useMemo(() => {  //useMemo : Dùng useMemo để tránh Re-render lại một logic không cần thiết
+  //   nameRef.current.focus()
+  // }
+  // const total = useMemo(() => {  //useMemo : Dùng useMemo để tránh Re-render lại một logic không cần thiết
 
-   const result =  products.reduce((result, prod) => result+ prod.price , 0)
-    return result
-  },[products])
+  //  const result =  products.reduce((result, prod) => result+ prod.price , 0)
+  //   return result
+  // },[products])
+
+//===================useReducer===============================
+
+const [count, dispatch] = useReducer(reducer, initState)
+
+
+
     return (
       // <div className='App'>
       //   <button onClick={() => setShow(!show)}>Show</button>
@@ -227,7 +254,7 @@ function App(){
       <div>
         { /* <Content onIncrease={handleIncrease}/>
         <h1>{count}</h1> */ }
-         <input
+         {/* <input
           ref={nameRef}
           value={name}
           placeholder= 'Enter Name...'
@@ -253,7 +280,17 @@ function App(){
               </li>
             ) )
           }
-        </ul>
+        </ul> */}
+        <h1>{count}</h1>
+        <button
+          onClick={() => dispatch(DOWN_ACTION)}
+        >DOWN</button>
+        <button
+          onClick={() => dispatch(UP_ACTION)}
+        >UP</button>
+      
+      
+
       </div>
     )
 }
