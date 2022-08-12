@@ -1,7 +1,9 @@
-import { useCallback, useMemo, useReducer, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useReducer, useRef, useState } from 'react';
 import './App.css';
 import Content from './Content';
 import TodoApp from "./Todo"
+import Text from './Text'
+import { ThemeContext } from "./ThemeContext"
 
 
 //============TWO-WAY-BINDING in FORM===================
@@ -280,6 +282,9 @@ import TodoApp from "./Todo"
 
 // }
 
+//=====Create Context==============
+
+
 function App(){
   // const [show, setShow] = useState(false)
   // const [count, setCount] = useState(0)
@@ -329,12 +334,17 @@ function App(){
 // }
 
 
+//=====================useContext()====================
+
+const context = useContext(ThemeContext)
 
     return (
       // <div className='App'>
       //   <button onClick={() => setShow(!show)}>Show</button>
       //    {show&& <Content/>}
       // </div>
+
+
       <div style={{padding: '0 20px'}}>
         { /* <Content onIncrease={handleIncrease}/>
         <h1>{count}</h1> */ }
@@ -390,11 +400,18 @@ function App(){
             ))}
          </ul>
        */}
-       <TodoApp/>
+       {/* <TodoApp/> */}
+
+       
+       <button onClick={context.handleTheme}>Toggle Theme</button>
+       <Text />
+       
+       
 
       
 
       </div>
+      
     )
 }
 
