@@ -1,10 +1,13 @@
 import { createContext, useCallback, useContext, useMemo, useReducer, useRef, useState } from 'react';
+import { Routes, Route, Link } from 'react-router-dom'
 import './App.css';
 import Content from './Content';
 import TodoApp from "./Todo"
 import Text from './Text'
 import { ThemeContext } from "./ThemeContext"
-
+import HomePage from './pages/Home';
+import NewPage from './pages/New';
+import ContactPage from './pages/Contact';
 
 //============TWO-WAY-BINDING in FORM===================
 // function App() {
@@ -336,7 +339,7 @@ function App(){
 
 //=====================useContext()====================
 
-const context = useContext(ThemeContext)
+// const context = useContext(ThemeContext)
 
     return (
       // <div className='App'>
@@ -403,11 +406,28 @@ const context = useContext(ThemeContext)
        {/* <TodoApp/> */}
 
        
-       <button onClick={context.handleTheme}>Toggle Theme</button>
-       <Text />
+       {/* <button onClick={context.handleTheme}>Toggle Theme</button> */}
+       {/* <Text />
+        */}
        
-       
-
+        <nav>
+          <ul>
+            <li>
+              <Link to='/'>Home</Link>
+            </li>
+            <li>
+              <Link to='/news'>New</Link>
+            </li>
+            <li>
+              <Link to='/contacts'>Contact</Link>
+            </li>
+          </ul>
+        </nav>
+        <Routes>
+          <Route path="/" element={<HomePage/>}/>
+          <Route path="/news" element={<NewPage/>}/>
+          <Route path="/contacts" element={<ContactPage/>}/>
+        </Routes>
       
 
       </div>
